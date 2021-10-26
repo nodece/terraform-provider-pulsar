@@ -162,7 +162,7 @@ func testPulsarTopicDestroy(s *terraform.State) error {
 			return fmt.Errorf("ERROR_READ_NAMESPACE: %w", err)
 		}
 
-		partitionedTopics, nonPartitionedTopics, err := client.List(*namespace)
+		partitionedTopics, nonPartitionedTopics, err := client.List(*namespace) //nolint
 		if err != nil {
 			return fmt.Errorf("ERROR_READ_TOPIC_DATA: %w", err)
 		}
@@ -194,7 +194,7 @@ func testPulsarTopicExists(topic string) resource.TestCheckFunc {
 		}
 
 		client := testAccProvider.Meta().(pulsar.Client).Topics()
-		partitionedTopics, nonPartitionedTopics, err := client.List(*namespace)
+		partitionedTopics, nonPartitionedTopics, err := client.List(*namespace) //nolint
 		if err != nil {
 			return fmt.Errorf("ERROR_READ_TOPIC_DATA: %w", err)
 		}

@@ -22,7 +22,9 @@ NAMESPACE=apache
 PKG_NAME=pulsar
 BINARY=terraform-provider-${PKG_NAME}
 VERSION=1.0.0
-OS_ARCH?=linux_amd64
+OS := $(if $(GOOS),$(GOOS),$(shell go env GOOS))
+ARCH := $(if $(GOARCH),$(GOARCH),$(shell go env GOARCH))
+OS_ARCH := ${OS}_${ARCH}
 
 default: build
 
@@ -87,11 +89,6 @@ lint:
 		-S019 \
 		./$(PKG_NAME)
 
-tools:
-	GO111MODULE=on go install github.com/bflad/tfproviderlint/cmd/tfproviderlint
-	GO111MODULE=on go install github.com/client9/misspell/cmd/misspell
-	GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
-
 test-compile:
 	@if [ "$(TEST)" = "./..." ]; then \
 		echo "ERROR: Set TEST to a specific package. For example,"; \
@@ -100,5 +97,5 @@ test-compile:
 	fi
 	go test -c $(TEST) $(TESTARGS)
 
-.PHONY: build test testacc fmt fmtcheck lint tools test-compile
+.PHONY: build test testacc fmt fmtcheck lint test-compile
 
